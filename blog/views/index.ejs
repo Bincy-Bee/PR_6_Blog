@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- <header>
+        <div class="row">
+            <div class="logo">
+                <a href="#">BLOGS</a>
+            </div>
+            <nav>
+                <ul class="row">
+                    <li><a href="">Home</a></li>
+                    <li><a href="">Add Blogs</a></li>
+                    <li><a href="">Sign Up</a></li>
+                    <li><a href="">Log In</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header> -->
+    <%- include("nav") %>
+    <section class="filtertab">
+        <div class="flex">
+            <div class="filter">
+                <h4>Filter by :</h4>
+            </div>
+            <div class="tabs">
+                <button id="sports">Sports</button>
+                <button id="technology">Technology</button>
+                <button id="electronic">Electronic</button>
+                <button id="health">Health</button>
+                <button id="entertainment">Entertainment</button>
+            </div>
+        </div>
+    </section>
+    <section class="displayblog">
+        <div id="parent-box">
+        </div>
+    </section>
+</body>
+<script src="/home.js"></script>
+</html>
