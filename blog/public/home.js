@@ -1,4 +1,5 @@
 
+let id = -1;
 const displayblog = (data)=>{
     document.getElementById("parent-box").innerHTML="";
     data.map((ele)=>{
@@ -10,6 +11,8 @@ const displayblog = (data)=>{
         let title = document.createElement("p");
         title.innerHTML = ele.title;
         title.setAttribute("id", "blogtitle");
+
+        
 
         let deletebutton = document.createElement("button");
         deletebutton.innerHTML = "Delete";
@@ -24,7 +27,7 @@ const displayblog = (data)=>{
             id = ele.id;
         })
 
-        div.append(img, title, deletebutton);
+        div.append(img, title,  deletebutton);
         document.getElementById("parent-box").append(div);
     })
 
@@ -35,6 +38,7 @@ const delblog=(id)=>{
     fetch(`http://localhost:8090/blog/delete/${id}`, {
         method : "DELETE"
     })
+    window.location.reload();
 }
 
 const filterCategory=(category)=>{

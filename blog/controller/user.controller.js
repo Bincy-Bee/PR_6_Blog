@@ -1,21 +1,12 @@
 const { blog } = require("../models/Blog.schema")
 const { user } = require("../models/user.schema")
 
-const index = (req,res)=>{ 
-    res.render("index")
-}
-const signup = (req,res)=>{
-    res.render("signup")
-}
-const login = (req,res)=>{
-    res.render("login")
-}
 
 const getSignup = async(req,res)=>{
     try {
         let data = await user.findOne({email : req.body.email});
         if(data){
-            return res.send({"username" : req.body.username})
+            return res.send({username : req.body.username})
         }
         else{
             let data = await user.create(req.body);
@@ -25,6 +16,10 @@ const getSignup = async(req,res)=>{
     } catch (error) {
         return res.send(error.message)
     }
+}
+
+const signup = (req,res)=>{
+    res.render("signup")
 }
 
 const getLogin = async(req,res)=>{
@@ -45,9 +40,10 @@ const getLogin = async(req,res)=>{
     }
 }
 
-const getBlogs = (req,res)=>{
-    res.render("blog")
+const login = (req,res)=>{
+    res.render("login")
 }
+
 
 const allblogs = async (req,res)=>{
     try {
@@ -58,6 +54,11 @@ const allblogs = async (req,res)=>{
         return res.send(error.message);
     }
 }
+
+const getBlogs = (req,res)=>{
+    res.render("blog")
+}
+
 
 const displayblog = (req,res)=>{
     res.render("index")
@@ -103,4 +104,25 @@ const blogDelete = async(req,res)=>{
         return res.send(error.message)
     }
 }
-module.exports = {index, signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete}
+
+const blogUpdate = async(req,res)=>{
+    try {
+        const {id} = req.params;
+        console.log(id);
+        let blogupdate = await blog.findByIdAndUpdate(id);
+        res.send(blogupdate)
+    } catch (error) {
+        return res.send(error.message)
+    }
+}
+
+const singleBlogpage = (req,res)=>{
+    try {
+        res.render("single")
+        
+    } catch (error) {
+        return res.send(error.message)
+    }
+}
+
+module.exports = {signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete, blogUpdate}
