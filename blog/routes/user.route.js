@@ -1,6 +1,6 @@
 const {Router} = require('express');
-const { signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete, blogUpdate } = require('../controller/user.controller');
-const { findcookies, checkFiled } = require('../middleware/auth');
+const { signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete, blogUpdate, singleBlogpage, movie, like, comment,   } = require('../controller/user.controller');
+const { findcookies, checkFiled, checksignupin } = require('../middleware/auth');
 const router = Router();
 
 
@@ -26,7 +26,13 @@ router.delete("/blog/delete/:id", findcookies, blogDelete);
 
 router.patch("/blog/edit/:id", findcookies, blogUpdate);
 
-router.get("/blog/singleBlog/:id",)
+router.get("/blog/singleblog/:id", singleBlogpage);
+
+router.patch("/blog/like/:id",checksignupin, like);
+
+router.patch("/blog/comment/:id", comment)
+
+router.get("/", movie)
 
 
 module.exports = {router};

@@ -28,5 +28,13 @@ const checkFiled = async(req,res,next)=>{
         res.status(400).send(`All fields are required`);
     }
 }
-
-module.exports = {findcookies, checkFiled}
+const checksignupin = (req,res,next)=>{
+    let {id} = req.cookies;
+    if(id){
+        next()
+    }
+    else{
+        res.send("SignUp or Login require");
+    }
+}
+module.exports = {findcookies, checkFiled, checksignupin}

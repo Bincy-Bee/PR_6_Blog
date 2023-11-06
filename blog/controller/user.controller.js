@@ -6,7 +6,7 @@ const getSignup = async(req,res)=>{
     try {
         let data = await user.findOne({email : req.body.email});
         if(data){
-            return res.send({username : req.body.username})
+            return res.cookie("id", data.id).cookie("role", data.role).send(`Account created successfully ${data.username}`)
         }
         else{
             let data = await user.create(req.body);
@@ -93,11 +93,12 @@ const blogfilter = async(req,res)=>{
     let filterdata = await blog.find(fildata)
     res.send(filterdata);
 }
-
+const movie = (req,res)=>{
+    res.send("Welcome to the movie API")
+}
 const blogDelete = async(req,res)=>{
     try {
         const {id} = req.params;
-        console.log(id);
         let deletedBlog = await blog.findByIdAndDelete(id);
         res.send(deletedBlog)
     } catch (error) {
@@ -108,21 +109,50 @@ const blogDelete = async(req,res)=>{
 const blogUpdate = async(req,res)=>{
     try {
         const {id} = req.params;
-        console.log(id);
         let blogupdate = await blog.findByIdAndUpdate(id);
         res.send(blogupdate)
     } catch (error) {
         return res.send(error.message)
     }
 }
-
-const singleBlogpage = (req,res)=>{
+const singleBlogpage = async(req,res)=>{
     try {
-        res.render("single")
+        let {id} = req.params;
+        let singleBlog = await blog.findById(id);
+        res.render("singleBlogPage", {singleBlog});
+    } catch (error) {
+        return res.send(error.message)
+    }
+}
+const like = async(req,res)=>{
+    try {
+        let {id} = req.params;
+        let liker = await user.findById(req.cookies.id)
+        let likecount = await blog.findById(id);
+        likecount.likedBy.push({username: liker.username});
+        await likecount.save();
+        res.send({likecount})
         
     } catch (error) {
         return res.send(error.message)
     }
 }
 
-module.exports = {signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete, blogUpdate}
+
+const comment = async(req,res)=>{
+    try {
+        let {comment} = req.body;
+        console.log(comment)
+        let {id} = req.params;
+        console.log(id);
+        let commenter = await user.findById(req.cookies.id);
+        let postcomment = await blog.findById(id);
+        postcomment.comments.push({text:comment, username: commenter.username});
+        await postcomment.save();
+        res.send(postcomment)
+    } catch (error) {
+        return res.send(error.message)
+    }
+}
+
+module.exports = {signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete, blogUpdate, singleBlogpage, movie, like, comment, }
