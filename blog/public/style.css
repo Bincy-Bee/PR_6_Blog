@@ -259,3 +259,11 @@ header nav ul li a:hover{
     border-radius: 8px;
     border: 1px solid rgb(128, 128, 128);
 }
+.search{
+    margin-left: 250px;
+}
+.search form input{
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid rgb(128, 128, 128);
+}

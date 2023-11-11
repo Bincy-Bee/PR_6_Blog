@@ -1,38 +1,15 @@
 const {Router} = require('express');
-const { signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete, blogUpdate, singleBlogpage, movie, like, comment,   } = require('../controller/user.controller');
-const { findcookies, checkFiled, checksignupin } = require('../middleware/auth');
+const { signup, login, getSignup, getLogin, } = require('../controller/user.controller');
 const router = Router();
 
 
-router.post("/user/signup", getSignup);
+router.post("/signup", getSignup);
 
-router.get("/user/signup", signup);
+router.get("/signup", signup);
 
-router.post("/user/login", getLogin);
+router.post("/login", getLogin);
 
-router.get("/user/login", login);
-
-router.get("/blog/create",findcookies, getBlogs);
-
-router.get("/blog/blogs", allblogs);
-
-router.get("/blog/", displayblog)
-
-router.post("/blog/create", checkFiled, addBlog);
-
-router.get("/blog/filter", blogfilter);
-
-router.delete("/blog/delete/:id", findcookies, blogDelete);
-
-router.patch("/blog/edit/:id", findcookies, blogUpdate);
-
-router.get("/blog/singleblog/:id", singleBlogpage);
-
-router.patch("/blog/like/:id",checksignupin, like);
-
-router.patch("/blog/comment/:id", comment)
-
-router.get("/", movie)
+router.get("/login", login);
 
 
 module.exports = {router};

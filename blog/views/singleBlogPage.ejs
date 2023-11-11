@@ -9,12 +9,12 @@
 <body>
     <%- include("nav") %>
     <section class="singleblog">
-        <div id="blog">
-            <img src=<%= singleBlog.image %>  id="img">
+        <div id="blog"> 
+            <img id="img" src=<%= singleBlog.image %> >
             <h3 id="title"><%= singleBlog.title %></h3>
             <span id="category"><%= singleBlog.category %></span>
             <p id="content"><%= singleBlog.content %></p>
-            <button id="like">Like</button><span id="count">0</span>
+            <button id="like">Like</button><span id="count" >0 </span>
             <form action="/blog/comment/:id" method="post" id="comment">
                 <input type="text" placeholder="Add a comment" name="comments" id="incomment">
                 <input type="submit" value="Submit" id="subcomment">

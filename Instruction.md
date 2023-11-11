@@ -296,7 +296,7 @@ let query = req.query.blogs;
 
 2. `const blogs = await blog.find();`: It fetches a list of blogs from a database. Think of it as a collection of articles or posts.
 
-3. `const options = { keys: ["author", "category", "title"] };`: This line tells the program where to look for the search term. It searches for the query in the "author," "category," and "title" of the blogs.
+3. `const options = { keys: ["author" , "category", "title"] };`: This line tells the program where to look for the search term. It searches for the query in the "author," "category," and "title" of the blogs.
 
 4. `const fuse = new Fuse(blogs, options);`: This sets up a search tool that uses the `options` to find results in the `blogs`.
 

@@ -1,5 +1,6 @@
-const { blog } = require("../models/Blog.schema")
-const { user } = require("../models/user.schema")
+const fuse = require('fuse.js');
+const { blog } = require("../models/Blog.schema");
+const { user } = require("../models/user.schema");
 
 
 const getSignup = async(req,res)=>{
@@ -59,7 +60,6 @@ const getBlogs = (req,res)=>{
     res.render("blog")
 }
 
-
 const displayblog = (req,res)=>{
     res.render("index")
 }
@@ -93,9 +93,11 @@ const blogfilter = async(req,res)=>{
     let filterdata = await blog.find(fildata)
     res.send(filterdata);
 }
+
 const movie = (req,res)=>{
     res.send("Welcome to the movie API")
 }
+
 const blogDelete = async(req,res)=>{
     try {
         const {id} = req.params;
@@ -109,12 +111,20 @@ const blogDelete = async(req,res)=>{
 const blogUpdate = async(req,res)=>{
     try {
         const {id} = req.params;
-        let blogupdate = await blog.findByIdAndUpdate(id);
+        console.log(id)
+        let blogupdate = await blog.findByIdAndUpdate(id, req.body);
         res.send(blogupdate)
     } catch (error) {
         return res.send(error.message)
     }
 }
+const updateblog =async (req,res)=>{
+    const {id} = req.params;
+    
+    let udata = await blog.findById(id);
+    res.render("updateblog", {udata});
+}
+
 const singleBlogpage = async(req,res)=>{
     try {
         let {id} = req.params;
@@ -138,13 +148,10 @@ const like = async(req,res)=>{
     }
 }
 
-
 const comment = async(req,res)=>{
     try {
         let {comment} = req.body;
-        console.log(comment)
         let {id} = req.params;
-        console.log(id);
         let commenter = await user.findById(req.cookies.id);
         let postcomment = await blog.findById(id);
         postcomment.comments.push({text:comment, username: commenter.username});
@@ -155,4 +162,18 @@ const comment = async(req,res)=>{
     }
 }
 
-module.exports = {signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete, blogUpdate, singleBlogpage, movie, like, comment, }
+const searchAny = async(req,res)=>{
+    try {
+        let query = req.query.blogs;
+        const blogs = await blog.find();
+        const option = { keys : ["author", "category", "title",]}
+
+        const fuseFilter = new fuse(blogs, option)
+        const result = fuseFilter.search(query);
+        return res.send(result)
+    } catch (error) {
+        return res.send(error.message)
+    }
+}
+
+module.exports = {signup, login, getSignup, getLogin, addBlog, getBlogs, allblogs, displayblog, blogfilter, blogDelete, blogUpdate, singleBlogpage, movie, like, comment, searchAny, updateblog}

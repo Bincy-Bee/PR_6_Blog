@@ -1,4 +1,4 @@
-
+let blogmap = [];
 // let id = -1;
 const displayblog = (data)=>{
     document.getElementById("parent-box").innerHTML="";
@@ -13,9 +13,7 @@ const displayblog = (data)=>{
 
         let title = document.createElement("p");
         title.innerHTML = ele.title;
-        title.setAttribute("class", "title");
-
-        
+        title.setAttribute("class", "title");        
 
         let deletebutton = document.createElement("button");
         deletebutton.innerHTML = "Delete";
@@ -24,10 +22,19 @@ const displayblog = (data)=>{
             delblog(ele._id);
         })
 
+        let editbutton = document.createElement("button");
+        editbutton.innerHTML = "Edit";
+        editbutton.setAttribute("id","editblog");
+        editbutton.addEventListener("click",(e)=>{
+            e.preventDefault();
+            window.location.href=`/blog/updateblog/${ele._id}`;
+            
+        })
+
         let div = document.createElement("div");
         div.setAttribute("class", "list");
         
-        div.append(img, title,  deletebutton);
+        div.append(img, title, editbutton, deletebutton);
         div.addEventListener("click",()=>{
             window.location.href=`/blog/singleBlog/${ele._id}`
         })
@@ -58,6 +65,29 @@ document.getElementById("technology").addEventListener("click",()=>filterCategor
 document.getElementById("electronic").addEventListener("click",()=>filterCategory("electronic"));
 document.getElementById("health").addEventListener("click",()=>filterCategory("health"));
 document.getElementById("entertainment").addEventListener("click",()=>filterCategory("entertainment"));
+
+
+document.getElementById("insearch").addEventListener("input", (e)=>{
+    e.preventDefault();
+
+    let query = document.getElementById("insearch").value;
+
+    fetch(`http://localhost:8090/blog/search?blogs=${query}`)
+    .then((res)=> res.json())
+    .then((data)=>{
+        if(data.length > 0){
+            for (i=0; i < data.length; i++){
+                blogmap.push(data[i].item);
+                displayblog(blogmap);
+            }
+        }
+        else{
+            get();
+        }
+    })
+})
+
+
 
 const get = async()=>{
 

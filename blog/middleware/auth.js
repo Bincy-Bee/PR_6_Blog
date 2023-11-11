@@ -5,7 +5,6 @@ const findcookies = async(req,res,next)=>{
 
     if(id){
         let data = await user.findById(id);
-        console.log(data)
         if (data.role == "admin"){
             next()
         }
