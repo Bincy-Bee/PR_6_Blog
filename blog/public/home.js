@@ -34,7 +34,7 @@ const displayblog = (data)=>{
         let div = document.createElement("div");
         div.setAttribute("class", "list");
         
-        div.append(img, title, editbutton, deletebutton);
+        div.append(img, title, editbutton);
         div.addEventListener("click",()=>{
             window.location.href=`/blog/singleBlog/${ele._id}`
         })

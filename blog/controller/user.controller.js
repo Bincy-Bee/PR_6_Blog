@@ -100,18 +100,39 @@ const movie = (req,res)=>{
 
 const blogDelete = async(req,res)=>{
     try {
-        const {id} = req.params;
-        let deletedBlog = await blog.findByIdAndDelete(id);
-        res.send(deletedBlog)
+        const {id} = req.params
+
+        const data = await blog.findByIdAndDelete(id)
+        if(data){
+            const data = await blog.find()
+            return res.send({blog:data})
+        }
+        else{
+            return res.send({message:"blog is not available"})
+        }
+
     } catch (error) {
-        return res.send(error.message)
+        return res.send({error:error})
     }
+    // try {
+    //     const {id} = req.params;
+    //     let deletedBlog = await blog.findByIdAndDelete(id);
+    //     // res.send(deletedBlog);
+    //     if(deletedBlog){
+    //         const data = await blog.find()
+    //         return res.send({blog:data})
+    //     }
+    //     else{
+    //         return res.send({message:"blog is not available"})
+    //     }
+    // } catch (error) {
+    //     return res.send(error.message)
+    // }
 }
 
 const blogUpdate = async(req,res)=>{
     try {
         const {id} = req.params;
-        console.log(id)
         let blogupdate = await blog.findByIdAndUpdate(id, req.body);
         res.send(blogupdate)
     } catch (error) {
@@ -120,9 +141,13 @@ const blogUpdate = async(req,res)=>{
 }
 const updateblog =async (req,res)=>{
     const {id} = req.params;
-    
-    let udata = await blog.findById(id);
-    res.render("updateblog", {udata});
+    try {
+        let udata = await blog.findById(id);
+        res.render("updateblog", {udata});
+    } catch (error) {
+        return res.send(error.message)
+    }
+
 }
 
 const singleBlogpage = async(req,res)=>{
@@ -134,14 +159,15 @@ const singleBlogpage = async(req,res)=>{
         return res.send(error.message)
     }
 }
+
 const like = async(req,res)=>{
     try {
         let {id} = req.params;
         let liker = await user.findById(req.cookies.id)
-        let likecount = await blog.findById(id);
+        let likecount = await blog.findById(req.params.id);
         likecount.likedBy.push({username: liker.username});
         await likecount.save();
-        res.send({likecount})
+        res.send(likecount)
         
     } catch (error) {
         return res.send(error.message)
@@ -150,11 +176,11 @@ const like = async(req,res)=>{
 
 const comment = async(req,res)=>{
     try {
-        let {comment} = req.body;
+        let {text} = req.body;
         let {id} = req.params;
         let commenter = await user.findById(req.cookies.id);
         let postcomment = await blog.findById(id);
-        postcomment.comments.push({text:comment, username: commenter.username});
+        postcomment.comments.push({text, username: commenter.username});
         await postcomment.save();
         res.send(postcomment)
     } catch (error) {

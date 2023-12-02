@@ -20,12 +20,12 @@ document.getElementById("comment").addEventListener("submit",(e)=>{
     console.log(url)
     let id = url[url.length - 1]
     console.log(id)
-    let comments ={
+    let obj ={
         comment : document.getElementById("incomment").value,
     }
     fetch(`/blog/comment/${id}`,{
         method : "PATCH",
         headers : {"Content-type" : "application/json"},
-        body : JSON.stringify(comments)
+        body : JSON.stringify(obj)
     })
 })
